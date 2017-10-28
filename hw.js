@@ -2,10 +2,10 @@ $( document ).ready(function() {
 
 	// create variables needed
 	var buttons = ["Cat","Dog","Walking Dead","Wolf","Dexter","Game of Thrones","Beatles","Goat","Donkey","Music","Phish","Turtle"]
-	var animal;
+	var gify;
 	var rating;
-	var results = [];
-	var pause = false;
+	// var results = [];
+	// var pause = false;
 
 
    // pause gif function
@@ -20,16 +20,16 @@ $( document ).ready(function() {
     $(this).addClass('playing');
     $(this).attr('src', src.replace(/\_s.gif/i, ".gif"))
   }
-});
+});//end of pause
 
 // display the gifs
 
-    function displayAnimalGifs(){
-       $("#animals").empty();
-		var animalName = $(this).attr("data-name");
-		console.log("----------")
-		console.log(this);
-		var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + animalName + "&api_key=dc6zaTOxFJmzC&limit=10";
+    function displayGifs(){
+       $("#gifys").empty();
+		var gifyName = $(this).attr("data-name");
+		// console.log("----------")
+		// console.log(this);
+		var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gifyName + "&api_key=dc6zaTOxFJmzC&limit=10";
 		
 		    $.ajax({
 		        url: queryURL,
@@ -37,7 +37,7 @@ $( document ).ready(function() {
 		    }).done(function(response) {
 		    	console.log(response)
 		            results = response.data;
-		            console.log(results) 
+		            // console.log(results) 
 
 		            for (var i = 0; i < results.length; i++) {
 		              var gifDiv = $("<div class='item'>");
@@ -46,15 +46,14 @@ $( document ).ready(function() {
 
 		              var p = $("<p>").text("Rating: " + rating);
 
-		              var animalImage = $("<img>");
-		              animalImage.attr("class","gif")
-		              animalImage.attr("data-name", buttons[i]);
+		              var gifyImage = $("<img>");
+		              gifyImage.attr("class","gif")
+		              gifyImage.attr("data-name", buttons[i]);
 
-		              animalImage.attr("src", results[i].images.fixed_height_still.url);
-		              	gifDiv.prepend(animalImage);
+		              gifyImage.attr("src", results[i].images.fixed_height_still.url);
+		              	gifDiv.prepend(gifyImage);
 						gifDiv.prepend(p);
-		              // $("#animals").append("Rating: " + rating);
-		              $("#animals").append(gifDiv);
+		              $("#gifys").append(gifDiv);
 		            }
 		    });
 	};    	
@@ -64,13 +63,13 @@ $( document ).ready(function() {
 	// create function to render buttons
 		var renderButtons = function(){
 			console.log(buttons)
-			console.log(animal)
+			console.log(gify)
 			console.log(rating)
 			// empty div holding buttons
-			$("#animalButtons").empty();
+			$("#gifyButtons").empty();
 
 				for (var i = 0; i < buttons.length; i++) {
-					// Then dynamicaly generating buttons for each animal in the array
+					// Then dynamicaly generating buttons for each gify in the array
 		            // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
 		            var a = $("<button>");
 		            // Adding a class
@@ -82,29 +81,29 @@ $( document ).ready(function() {
 		            // Provided the initial button text
 		            a.text(buttons[i]);
 		            // Added the button to the HTML
-		            $("#animalButtons").append(a);
+		            $("#gifyButtons").append(a);
 		            // console.log(a)
 				}
 		};
 renderButtons(); //initial call of renderButtons
 
-			$("#addAnimal").on("click", function(event) {
+			$("#addgify").on("click", function(event) {
 			          event.preventDefault();
-			         	animal = $("#animal-input").val().trim();
+			         	gify = $("#gify-input").val().trim();
 			          // This line grabs the input from the textbox
 			          
 
-			          console.log(animal)
-			          // The animal from the textbox is then added to our array
-			          buttons.push(animal);
-			          console.log(buttons)
-			          // Calling renderButtons which handles the processing of our animal array
+			          // console.log(gify)
+			          // The gify from the textbox is then added to our array
+			          buttons.push(gify);
+			          // console.log(buttons)
+			          // Calling renderButtons which handles the processing of our gify array
 			          renderButtons();
 		   	});
 
-			$(document).on("click", ".button", displayAnimalGifs);
+			$(document).on("click", ".button", displayGifs);
 			// $(document).on("click", ".gif", pausegif);
 			// $(".button").on("click", function(event){
-			// 	displayAnimalGifs()
+			// 	displaygifyGifs()
 			// })
 })
